@@ -40,6 +40,7 @@ const Nav = styled(motion.nav)`
   font-size: 15px;
   font-weight: 300;
   padding: 0px 60px;
+  z-index: 1;
 `;
 
 const navVariants = {
@@ -93,7 +94,7 @@ const Icon = styled(motion.svg)`
   width: 20px;
   height: 20px;
   fill: ${(props) => props.theme.white.default};
-  z-index: 1;
+  z-index: 2;
 `;
 
 const searchIconVariants = {
@@ -171,7 +172,6 @@ function Header() {
 
   useEffect(() => {
     scrollY.onChange(() => {
-      console.log(scrollY.get() > 0);
       if (scrollY.get() > 0) {
         navAnimation.start("fill");
       } else {
