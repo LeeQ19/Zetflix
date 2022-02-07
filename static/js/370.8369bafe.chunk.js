@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkzetflix=self.webpackChunkzetflix||[]).push([[370],{6370:function(e,t,u){u.r(t);var f=u(5749),n=u(184);t.default=function(){return(0,n.jsx)(f.Z,{})}}}]);
+//# sourceMappingURL=370.8369bafe.chunk.js.map
