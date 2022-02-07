@@ -7,7 +7,7 @@ import Loader from './components/Loader';
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<Loader />}>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <App />
       </BrowserRouter>
     </Suspense>
