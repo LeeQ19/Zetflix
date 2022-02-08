@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/157.fa7d6b9b.chunk.js","mappings":"qIAMA,UAJA,WACE,OAAO,SAAC,IAAD","sources":["pages/Latest.tsx"],"sourcesContent":["import Loader from \"../components/Loader\";\r\n\r\nfunction Latest() {\r\n  return <Loader />;\r\n}\r\n\r\nexport default Latest;\r\n"],"names":[],"sourceRoot":""}

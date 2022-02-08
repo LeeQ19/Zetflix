@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkzetflix=self.webpackChunkzetflix||[]).push([[558],{4084:function(n,t,e){var i,r=e(168),u=e(5751),f=e(184),s=u.ZP.h1(i||(i=(0,r.Z)(["\n  font-size: 1.5vw;\n  margin: 6vh 2.2vw;\n"])));t.Z=function(n){var t=n.title;return(0,f.jsx)(s,{children:t})}},558:function(n,t,e){e.r(t);var i=e(4084),r=e(184);t.default=function(){return(0,r.jsx)(i.Z,{title:"Tv Shows"})}}}]);
+//# sourceMappingURL=558.a9cd0c3b.chunk.js.map

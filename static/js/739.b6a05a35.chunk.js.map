@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/739.b6a05a35.chunk.js","mappings":"qIAMA,UAJA,WACE,OAAO,SAAC,IAAD","sources":["pages/Movie.tsx"],"sourcesContent":["import Loader from \"../components/Loader\";\r\n\r\nfunction Movie() {\r\n  return <Loader />;\r\n}\r\n\r\nexport default Movie;\r\n"],"names":[],"sourceRoot":""}

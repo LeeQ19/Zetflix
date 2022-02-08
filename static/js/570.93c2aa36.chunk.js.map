@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/570.93c2aa36.chunk.js","mappings":"qIAMA,UAJA,WACE,OAAO,SAAC,IAAD","sources":["pages/MyList.tsx"],"sourcesContent":["import Loader from \"../components/Loader\";\r\n\r\nfunction MyList() {\r\n  return <Loader />;\r\n}\r\n\r\nexport default MyList;\r\n"],"names":[],"sourceRoot":""}

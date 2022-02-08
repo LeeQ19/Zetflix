@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/370.8369bafe.chunk.js","mappings":"qIAMA,UAJA,WACE,OAAO,SAAC,IAAD","sources":["pages/Search.tsx"],"sourcesContent":["import Loader from \"../components/Loader\";\r\n\r\nfunction Search() {\r\n  return <Loader />;\r\n}\r\n\r\nexport default Search;\r\n"],"names":[],"sourceRoot":""}
