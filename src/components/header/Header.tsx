@@ -30,8 +30,6 @@ const navList = [
 const Nav = styled(motion.nav)`
   width: 100%;
   height: 70px;
-  color: ${(props) => props.theme.white.default};
-  transition: background-color 0.4s;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -48,7 +46,7 @@ const navVariants = {
     backgroundColor: "rgba(20, 20, 20, 1)",
   },
   gradient: {
-    backgroundColor: "",
+    backgroundColor: "rgba(20, 20, 20, 0)",
     backgroundImage: "linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 10%, rgba(0, 0, 0, 0))",
   },
 };
@@ -273,7 +271,7 @@ function Header() {
             variants={profileVariants}
             initial="initial"
             animate={profileAnimation}
-            transition={{ type: "linear", }}
+            transition={{ type: "tween", }}
             style={{ width: "12px", originX: "center", originY: "center", }}
           >
             <path d="M10 6392 c0 -4 1438 -1445 3195 -3202 l3195 -3194 3195 3194 c1757 1757 3195 3198 3195 3202 0 5 -2875 8 -6390 8 -3515 0 -6390 -3 -6390 -8z" transform="translate(0.000000,640.000000) scale(0.100000,-0.100000)" />

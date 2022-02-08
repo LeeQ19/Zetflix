@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 import { GlobalStyle } from './GlobalStyle';
-import Header from './components/Header';
+import Header from './components/header/Header';
 import Router from './routes/Router';
 
 function App() {

@@ -1,7 +1,7 @@
-import Loader from "../components/Loader";
+import EmptyPage from "../components/EmptyPage";
 
 function Tv() {
-  return <Loader />;
+  return <EmptyPage title="Tv Shows" />;
 }
 
 export default Tv;

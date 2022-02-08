@@ -1,7 +1,7 @@
-import Loader from "../components/Loader";
+import EmptyPage from "../components/EmptyPage";
 
 function Search() {
-  return <Loader />;
+  return <EmptyPage title="Search" />;
 }
 
 export default Search;

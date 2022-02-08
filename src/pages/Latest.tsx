@@ -1,7 +1,7 @@
-import Loader from "../components/Loader";
+import EmptyPage from "../components/EmptyPage";
 
 function Latest() {
-  return <Loader />;
+  return <EmptyPage title="New & Popular" />;
 }
 
 export default Latest;

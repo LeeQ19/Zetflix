@@ -1,7 +1,7 @@
-import Loader from "../components/Loader";
+import EmptyPage from "../components/EmptyPage";
 
 function MyList() {
-  return <Loader />;
+  return <EmptyPage title="My List" />;
 }
 
 export default MyList;

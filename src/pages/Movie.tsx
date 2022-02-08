@@ -1,7 +1,7 @@
-import Loader from "../components/Loader";
+import EmptyPage from "../components/EmptyPage";
 
 function Movie() {
-  return <Loader />;
+  return <EmptyPage title="Movies" />;
 }
 
 export default Movie;
