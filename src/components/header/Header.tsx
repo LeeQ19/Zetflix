@@ -27,7 +27,7 @@ const navList = [
   },
 ];
 
-const Nav = styled(motion.nav)`
+const Wrapper = styled(motion.nav)`
   width: 100%;
   height: 70px;
   display: flex;
@@ -41,7 +41,7 @@ const Nav = styled(motion.nav)`
   z-index: 1;
 `;
 
-const navVariants = {
+const wrapperVariants = {
   fill: {
     backgroundColor: "rgba(20, 20, 20, 1)",
   },
@@ -65,7 +65,7 @@ const Logo = styled(motion.svg)`
   fill: ${(props) => props.theme.red.default};
 `;
 
-const NavItems = styled.ul`
+const Nav = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -179,24 +179,16 @@ function Header() {
   }, [scrollY, navAnimation]);
 
   useEffect(() => {
-    if (openSearch) {
-      searchAnimation.start("open");
-    } else {
-      searchAnimation.start("close");
-    }
+    searchAnimation.start(openSearch ? "open" : "close");
   }, [openSearch, searchAnimation]);
 
   useEffect(() => {
-    if (overProfile) {
-      profileAnimation.start("onHover");
-    } else {
-      profileAnimation.start("initial");
-    }
+    profileAnimation.start(overProfile ? "onHover" : "initial");
   }, [overProfile, profileAnimation]);
   
   return (
-    <Nav
-      variants={navVariants}
+    <Wrapper
+      variants={wrapperVariants}
       initial="gradient"
       animate={navAnimation}
     >
@@ -209,7 +201,7 @@ function Header() {
             <motion.path d="M0,0H587V182L210,951l377-36v170q-293.47,33.99-587,68V970L391,181v-1H0V0ZM761,0h499V181H942V422l241-4V600c-81.17-.121-163.79,1.078-241,3V870c105.24-6.073,208.68-18.6,318-19v174q-249.48,19.995-499,40V0Zm614,0h555V181H1743v828l-181,3V181H1375V0Zm670,0h505V181H2223V409h247V591H2223V999H2045V0Zm616,0h181V841c105.81-.551,203.62,14.314,306,15v179l-143-9q-53.49-2.505-107-5-42.495-2-85-4-75.99-2.5-152-5V0Zm638,0h178V1061c-58-1.56-116.76-12.5-178-13V0Zm331,0h196q58.5,149.985,117,300h1Q4006,150.015,4068,0h198q-113.985,273.972-228,548,113.985,302.471,228,605h-7q-98.49-16.5-197-33-63.99-164.985-128-330h-1q-64.995,151.985-130,304-97.485-12-195-24v-1Q3724,805.527,3840,542,3735.015,271.027,3630,0Z" />
           </Logo>
         </Link>
-        <NavItems>
+        <Nav>
           {navList.map((v) => {
             return (match?.params.route === v.to ? (
               <NavCurrent key={v.name}>
@@ -223,7 +215,7 @@ function Header() {
               </NavItem>
             ))
           })}
-        </NavItems>
+        </Nav>
       </Col>
       <Col>
         <SearchWrapper>
@@ -278,7 +270,7 @@ function Header() {
           </Icon>
         </ProfileWrapper>
       </Col>
-    </Nav>
+    </Wrapper>
   );
 }
 

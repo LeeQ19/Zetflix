@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { makeImagePath } from "../utils";
 import { IResult, ISlider } from "../interfaces";
 
 const Wrapper = styled.div`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -12,19 +13,11 @@ const Wrapper = styled.div`
   top: -5vw;
 `;
 
-const PrevBtn = styled.button`
-  position: relative;
-`;
-
-const NextBtn = styled.button`
-  position: relative;
-`;
-
 const Row = styled(motion.div)`
   width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 1vw;
+  display: grid;
+  grid-template-columns: 1.5vw repeat(6, 1fr) 1.5vw;
+  gap: 0.5vw;
   position: absolute;
 `;
 
@@ -40,14 +33,55 @@ const rowVariants = {
   },
 };
 
+const PrevBtn = styled.div`
+  background-color: ${(props) => props.theme.black.darker+"80"};
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.theme.black.darker+"c0"};
+  }
+`;
+
+const NextBtn = styled.div`
+  background-color: ${(props) => props.theme.black.darker+"80"};
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.theme.black.darker+"c0"};
+  }
+`;
+
+const Icon = styled(motion.svg)`
+  width: 33%;
+  fill: ${(props) => props.theme.white.default};
+`;
+
+const iconVariants = {
+  hide: {
+    display: "none",
+  },
+  display: {
+    display: "inline-block",
+    scale: 1,
+  },
+  onHover: {
+    display: "inline-block",
+    scale: 1.5,
+  },
+};
+
 const Box = styled(motion.div)<{ bgimg: string }>`
-  width: 15vw;
-  height: 9vw;
+  height: 8vw;
   background-color: ${(props) => props.theme.black.default};
   background-size: cover;
   background-position: 0% 33%;
   background-image: url(${(props) => props.bgimg});
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 const boxVariants = {
@@ -90,9 +124,14 @@ const infoVariants = {
 };
 
 function Slider({ data, offset }: { data: IResult[], offset: number }) {
-  const [index, setIndex] = useState(0);
+  const [overSlider, setOverSlider] = useState(false);
+  const [overPrev, setOverPrev] = useState(false);
+  const [overNext, setOverNext] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
+  const [index, setIndex] = useState(0);
   const [contents, setContents] = useState<ISlider[]>();
+  const prevAnimation = useAnimation();
+  const nextAnimation = useAnimation();
 
   useEffect(() => {
     const contentsTemp: ISlider[] = [];
@@ -103,10 +142,15 @@ function Slider({ data, offset }: { data: IResult[], offset: number }) {
         title: v.title,
         overview: v.overview,
       });
-      return;
+      return 0;
     });
     setContents(contentsTemp);
   }, [data]);
+
+  useEffect(() => {
+    prevAnimation.start(overSlider ? (overPrev ? "onHover" : "display") : "hide");
+    nextAnimation.start(overSlider ? (overNext ? "onHover" : "display") : "hide");
+  }, [overSlider, overPrev, overNext, prevAnimation, nextAnimation]);
   
   const prevIndex = () => {
     if (contents) {
@@ -125,7 +169,6 @@ function Slider({ data, offset }: { data: IResult[], offset: number }) {
 
   return (
     <Wrapper>
-      <PrevBtn onClick={prevIndex}>Prev</PrevBtn>
       <AnimatePresence initial={false} onExitComplete={() => setIsLeaving(false)}>
         <Row
           key={index}
@@ -134,7 +177,21 @@ function Slider({ data, offset }: { data: IResult[], offset: number }) {
           animate="center"
           exit="left"
           transition={{ type: "tween", duration: 1 }}
+          onMouseEnter={() => setOverSlider(true)}
+          onMouseLeave={() => setOverSlider(false)}
         >
+          <PrevBtn onClick={prevIndex} onMouseOver={() => setOverPrev(true)} onMouseOut={() => setOverPrev(false)}>
+            <Icon
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 512"
+              variants={iconVariants}
+              initial="hide"
+              animate={prevAnimation}
+              transition={{ type: "tween" }}
+              style={{ originX: "right", originY: "center" }}
+            >
+              <motion.path d="M299,512L150,258,297,1l8,3,57,34Q299.506,146.989,237,256L362,475Z" transform="translate(-150 -0.5)" />
+            </Icon>
+          </PrevBtn>
           {contents?.slice(index * offset, (index + 1) * offset).map((v, i) => {
             return (
               <Box
@@ -154,9 +211,20 @@ function Slider({ data, offset }: { data: IResult[], offset: number }) {
               </Box>
             );
           })}
+          <NextBtn onClick={nextIndex} onMouseOver={() => setOverNext(true)} onMouseOut={() => setOverNext(false)}>
+            <Icon
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 512"
+              variants={iconVariants}
+              initial="hide"
+              animate={nextAnimation}
+              transition={{ type: "tween" }}
+              style={{ originX: "left", originY: "center" }}
+            >
+              <motion.path d="M213,1L362,255,215,512l-8-3-57-34q62.493-108.988,125-218Q212.507,147.511,150,38Z" transform="translate(-150 -0.5)" />
+            </Icon>
+          </NextBtn>
         </Row>
       </AnimatePresence>
-      <NextBtn onClick={nextIndex}>Next</NextBtn>
     </Wrapper>
   );
 }

@@ -68,7 +68,7 @@ export const GlobalStyle = createGlobalStyle`
     color: black;
     background-color: ${(props) => props.theme.black.darker};
     color: ${(props) => props.theme.white.default};
-    width: 100vw;
+    width: calc(100vw - 16px);
     overflow-x: hidden;
   }
   a {

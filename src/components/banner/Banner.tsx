@@ -5,7 +5,7 @@ import { IResult } from "../interfaces";
 const Wrapper = styled.div<{ bgimg: string }>`
   width: 100%;
   height: 50vw;
-  background-image: linear-gradient(rgba(20, 20, 20, 0), rgba(20, 20, 20, 1)), url(${(props) => props.bgimg});
+  background-image: linear-gradient(${(props) => props.theme.black.darker+"00"}, ${(props) => props.theme.black.darker+"ff"}), url(${(props) => props.bgimg});
   background-size: cover;
   background-position: 0% 33%;
   padding: 150px 60px;
