@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/Zetflix/static/js/main.71e12425.js",
-    "static/js/459.74b39d93.chunk.js": "/Zetflix/static/js/459.74b39d93.chunk.js",
+    "main.js": "/Zetflix/static/js/main.1e304dd5.js",
+    "static/js/459.d62e97b5.chunk.js": "/Zetflix/static/js/459.d62e97b5.chunk.js",
     "static/js/558.a9cd0c3b.chunk.js": "/Zetflix/static/js/558.a9cd0c3b.chunk.js",
     "static/js/739.2581f94f.chunk.js": "/Zetflix/static/js/739.2581f94f.chunk.js",
     "static/js/157.babcdcf7.chunk.js": "/Zetflix/static/js/157.babcdcf7.chunk.js",
@@ -11,8 +11,8 @@
     "static/media/img_Profile.png": "/Zetflix/static/media/img_Profile.55eeacb2ad3870c2fa06.png",
     "static/media/react.svg": "/Zetflix/static/media/react.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/Zetflix/index.html",
-    "main.71e12425.js.map": "/Zetflix/static/js/main.71e12425.js.map",
-    "459.74b39d93.chunk.js.map": "/Zetflix/static/js/459.74b39d93.chunk.js.map",
+    "main.1e304dd5.js.map": "/Zetflix/static/js/main.1e304dd5.js.map",
+    "459.d62e97b5.chunk.js.map": "/Zetflix/static/js/459.d62e97b5.chunk.js.map",
     "558.a9cd0c3b.chunk.js.map": "/Zetflix/static/js/558.a9cd0c3b.chunk.js.map",
     "739.2581f94f.chunk.js.map": "/Zetflix/static/js/739.2581f94f.chunk.js.map",
     "157.babcdcf7.chunk.js.map": "/Zetflix/static/js/157.babcdcf7.chunk.js.map",
@@ -21,6 +21,6 @@
     "667.32fef451.chunk.js.map": "/Zetflix/static/js/667.32fef451.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.71e12425.js"
+    "static/js/main.1e304dd5.js"
   ]
 }
