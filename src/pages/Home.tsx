@@ -30,7 +30,7 @@ function Home() {
       {dataBanner && dataSlider ? (
         <Wrapper>
           <Banner data={dataBanner} />
-          <Slider data={dataSlider} offset={offset} />
+          <Slider title="Now Playing" data={dataSlider} offset={offset} />
         </Wrapper>
       ) : (
         <Loader />

@@ -4,23 +4,23 @@ import { IResult } from "../interfaces";
 
 const Wrapper = styled.div<{ bgimg: string }>`
   width: 100%;
-  height: 50vw;
+  min-height: 50vw;
   background-image: linear-gradient(${(props) => props.theme.black.darker+"00"}, ${(props) => props.theme.black.darker+"ff"}), url(${(props) => props.bgimg});
   background-size: cover;
   background-position: 0% 33%;
-  padding: 150px 60px;
+  padding: 11vh 3.5vw;
+  margin-bottom: -20vh;
   cursor: default;
-  user-select: none;
 `;
 
 const Title = styled.h2`
-  width: 50%;
+  width: 50vw;
   font-size: 8vw;
-  margin-bottom: 20px;
+  margin-bottom: 5vh;
 `;
 
 const Overview = styled.p`
-  width: 36%;
+  width: 33vw;
   font-size: 1.4vw;
   font-weight: 400;
   letter-spacing: 0.07rem;

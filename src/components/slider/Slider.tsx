@@ -6,18 +6,77 @@ import { IResult, ISlider } from "../interfaces";
 
 const Wrapper = styled.div`
   width: 100%;
+  align-items: left;
+  position: relative;
+`;
+
+const Title = styled.h1`
+  font-size: 1.4vw;
+  font-weight: 700;
+  color: ${(props) => props.theme.white.darker};
+  margin: 0 0 1vw 3.5vw;
+  cursor: pointer;
+  &:hover {
+    color: ${(props) => props.theme.white.default};
+  }
+`;
+
+const RowWrapper = styled.div`
+  width: 100%;
+  height: 8vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  top: -5vw;
 `;
+
+const MoveBtn = styled.div`
+  width: 3vw;
+  height: 100%;
+  background-color: ${(props) => props.theme.black.darker+"80"};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: ${(props) => props.theme.black.darker+"c0"};
+  }
+  z-index: 1;
+`;
+
+const PrevBtn = styled(MoveBtn)`
+  border-radius: 0 0.2vw 0.2vw 0;
+`;
+
+const NextBtn = styled(MoveBtn)`
+  border-radius: 0.2vw 0 0 0.2vw;
+`;
+
+const Icon = styled(motion.svg)`
+  width: 33%;
+  fill: ${(props) => props.theme.white.default};
+`;
+
+const iconVariants = {
+  hide: {
+    display: "none",
+    scale: 1,
+  },
+  display: {
+    display: "inline-block",
+    scale: 1,
+  },
+  onHover: {
+    display: "inline-block",
+    scale: 1.5,
+  },
+};
 
 const Row = styled(motion.div)`
   width: 100%;
+  height: 8vw;
   display: grid;
-  grid-template-columns: 1.5vw repeat(6, 1fr) 1.5vw;
-  gap: 0.5vw;
+  grid-template-columns: 3vw repeat(6, 1fr) 3vw;
+  gap: 0.3vw;
   position: absolute;
 `;
 
@@ -33,54 +92,12 @@ const rowVariants = {
   },
 };
 
-const PrevBtn = styled.div`
-  background-color: ${(props) => props.theme.black.darker+"80"};
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: ${(props) => props.theme.black.darker+"c0"};
-  }
-`;
-
-const NextBtn = styled.div`
-  background-color: ${(props) => props.theme.black.darker+"80"};
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  cursor: pointer;
-  &:hover {
-    background-color: ${(props) => props.theme.black.darker+"c0"};
-  }
-`;
-
-const Icon = styled(motion.svg)`
-  width: 33%;
-  fill: ${(props) => props.theme.white.default};
-`;
-
-const iconVariants = {
-  hide: {
-    display: "none",
-  },
-  display: {
-    display: "inline-block",
-    scale: 1,
-  },
-  onHover: {
-    display: "inline-block",
-    scale: 1.5,
-  },
-};
-
 const Box = styled(motion.div)<{ bgimg: string }>`
-  height: 8vw;
   background-color: ${(props) => props.theme.black.default};
   background-size: cover;
   background-position: 0% 33%;
   background-image: url(${(props) => props.bgimg});
-  border-radius: 5px;
+  border-radius: 0.2vw;
   cursor: pointer;
 `;
 
@@ -123,11 +140,12 @@ const infoVariants = {
   },
 };
 
-function Slider({ data, offset }: { data: IResult[], offset: number }) {
+function Slider({ title, data, offset }: { title: string, data: IResult[], offset: number }) {
   const [overSlider, setOverSlider] = useState(false);
   const [overPrev, setOverPrev] = useState(false);
   const [overNext, setOverNext] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
+  const [isRtL, setIsRtL] = useState(true);
   const [index, setIndex] = useState(0);
   const [contents, setContents] = useState<ISlider[]>();
   const prevAnimation = useAnimation();
@@ -148,13 +166,15 @@ function Slider({ data, offset }: { data: IResult[], offset: number }) {
   }, [data]);
 
   useEffect(() => {
-    prevAnimation.start(overSlider ? (overPrev ? "onHover" : "display") : "hide");
-    nextAnimation.start(overSlider ? (overNext ? "onHover" : "display") : "hide");
+    prevAnimation.start(overPrev ? "onHover" : (overSlider ? "display" : "hide"));
+    nextAnimation.start(overNext ? "onHover" : (overSlider ? "display" : "hide"));
   }, [overSlider, overPrev, overNext, prevAnimation, nextAnimation]);
   
   const prevIndex = () => {
     if (contents) {
       if (isLeaving) return;
+      setIsLeaving(true);
+      setIsRtL(false);
     }
   };
   
@@ -162,6 +182,7 @@ function Slider({ data, offset }: { data: IResult[], offset: number }) {
     if (contents) {
       if (isLeaving) return;
       setIsLeaving(true);
+      setIsRtL(true);
       const maxIndex = Math.floor(contents.length / offset) - 1;
       setIndex((v) => (v === maxIndex ? 0 : v + 1));
     }
@@ -169,62 +190,76 @@ function Slider({ data, offset }: { data: IResult[], offset: number }) {
 
   return (
     <Wrapper>
-      <AnimatePresence initial={false} onExitComplete={() => setIsLeaving(false)}>
-        <Row
-          key={index}
-          variants={rowVariants}
-          initial="right"
-          animate="center"
-          exit="left"
-          transition={{ type: "tween", duration: 1 }}
-          onMouseEnter={() => setOverSlider(true)}
-          onMouseLeave={() => setOverSlider(false)}
+      <Title>{title}</Title>
+      <RowWrapper
+        onMouseEnter={() => setOverSlider(true)}
+        onMouseLeave={() => setOverSlider(false)}
+      >
+        <PrevBtn
+          onClick={prevIndex}
+          onMouseOver={() => setOverPrev(true)}
+          onMouseOut={() => setOverPrev(false)}
         >
-          <PrevBtn onClick={prevIndex} onMouseOver={() => setOverPrev(true)} onMouseOut={() => setOverPrev(false)}>
-            <Icon
-              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 512"
-              variants={iconVariants}
-              initial="hide"
-              animate={prevAnimation}
-              transition={{ type: "tween" }}
-              style={{ originX: "right", originY: "center" }}
-            >
-              <motion.path d="M299,512L150,258,297,1l8,3,57,34Q299.506,146.989,237,256L362,475Z" transform="translate(-150 -0.5)" />
-            </Icon>
-          </PrevBtn>
-          {contents?.slice(index * offset, (index + 1) * offset).map((v, i) => {
-            return (
-              <Box
-                key={v.id}
-                variants={boxVariants}
-                whileHover="onHover"
-                transition={{ type: "tween" }}
-                bgimg={v.imagePath}
-                style={{ originX: (i === 0 ? 0 : (i === offset - 1 ? 1 : 0.5)), originY: 1, }}
-              >
-                <Info
-                  variants={infoVariants}
-                  transition={{ type: "tween", duration: 0 }}
+          <Icon
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512"
+            variants={iconVariants}
+            initial="hide"
+            animate={prevAnimation}
+            transition={{ type: "tween" }}
+            style={{ originX: "right", originY: "center" }}
+          >
+            <motion.path d="M340,0l48,41L208,256,388,471l-48,41L125,256Z" transform="translate(-124.5)" />
+          </Icon>
+        </PrevBtn>
+        <AnimatePresence initial={false} onExitComplete={() => setIsLeaving(false)}>
+          <Row
+            key={index}
+            variants={rowVariants}
+            initial={isRtL ? "right" : "left"}
+            animate="center"
+            exit={isRtL ? "left" : "right"}
+            transition={{ type: "tween", duration: 0.5 }}
+          >
+            <div></div>
+            {contents?.slice(index * offset, (index + 1) * offset).map((v, i) => {
+              return (
+                <Box
+                  key={v.id}
+                  variants={boxVariants}
+                  whileHover="onHover"
+                  transition={{ type: "tween" }}
+                  bgimg={v.imagePath}
+                  style={{ originX: (i === 0 ? 0 : (i === offset - 1 ? 1 : 0.5)), originY: 1, }}
                 >
-                  <h4>{v.title}</h4>
-                </Info>
-              </Box>
-            );
-          })}
-          <NextBtn onClick={nextIndex} onMouseOver={() => setOverNext(true)} onMouseOut={() => setOverNext(false)}>
-            <Icon
-              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 512"
-              variants={iconVariants}
-              initial="hide"
-              animate={nextAnimation}
-              transition={{ type: "tween" }}
-              style={{ originX: "left", originY: "center" }}
-            >
-              <motion.path d="M213,1L362,255,215,512l-8-3-57-34q62.493-108.988,125-218Q212.507,147.511,150,38Z" transform="translate(-150 -0.5)" />
-            </Icon>
-          </NextBtn>
-        </Row>
-      </AnimatePresence>
+                  <Info
+                    variants={infoVariants}
+                    transition={{ type: "tween", duration: 0 }}
+                  >
+                    <h4>{v.title}</h4>
+                  </Info>
+                </Box>
+              );
+            })}
+            <div></div>
+          </Row>
+        </AnimatePresence>
+        <NextBtn
+          onClick={nextIndex}
+          onMouseOver={() => setOverNext(true)}
+          onMouseOut={() => setOverNext(false)}
+        >
+          <Icon
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512"
+            variants={iconVariants}
+            initial="hide"
+            animate={nextAnimation}
+            transition={{ type: "tween" }}
+            style={{ originX: "left", originY: "center" }}
+          >
+            <motion.path d="M173,0L125,41,305,256,125,471l48,41L388,256Z" transform="translate(-124.5)" />
+          </Icon>
+        </NextBtn>
+      </RowWrapper>
     </Wrapper>
   );
 }
