@@ -80,25 +80,23 @@ const Row = styled(motion.div)`
   position: absolute;
 `;
 
-const rowVariants = {
-  left: {
-    x: -window.innerWidth
-  },
-  center: {
-    x: 0,
-  },
-  right: {
-    x: window.innerWidth,
-  },
-};
-
 const Box = styled(motion.div)<{ bgimg: string }>`
   background-color: ${(props) => props.theme.black.default};
-  background-size: cover;
-  background-position: 0% 33%;
   background-image: url(${(props) => props.bgimg});
+  background-size: cover;
+  background-position: 50% 33%;
   border-radius: 0.2vw;
   cursor: pointer;
+`;
+
+const BoxLeft = styled(Box)`
+  background-position: 100% 33%;
+  border-radius: 0 0.2vw 0.2vw 0;
+`;
+
+const BoxRight = styled(Box)`
+  background-position: 0% 33%;
+  border-radius: 0 0.2vw 0.2vw 0;
 `;
 
 const boxVariants = {
@@ -124,7 +122,7 @@ const Info = styled(motion.div)`
   align-items: center;
   h4 {
     text-align: center;
-    font-size: 1.4vw;
+    font-size: 1.2vw;
   }
 `;
 
@@ -146,24 +144,30 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
   const [overNext, setOverNext] = useState(false);
   const [isLeaving, setIsLeaving] = useState(false);
   const [isRtL, setIsRtL] = useState(true);
+  const [isInitial, setIsInitial] = useState(true);
   const [index, setIndex] = useState(0);
-  const [contents, setContents] = useState<ISlider[]>();
+  const [currentContents, setCurrentContents] = useState<ISlider[]>([]);
+
+  const contents = data.map((v) => {
+    return ({
+      id: v.id,
+      imagePath: makeImagePath(v.backdrop_path ? v.backdrop_path : v.poster_path, "w500"),
+      title: v.title,
+      overview: v.overview,
+    });
+  });
+
   const prevAnimation = useAnimation();
   const nextAnimation = useAnimation();
 
   useEffect(() => {
-    const contentsTemp: ISlider[] = [];
-    data.map((v) => {
-      contentsTemp.push({
-        id: v.id,
-        imagePath: makeImagePath(v.backdrop_path ? v.backdrop_path : v.poster_path, "w500"),
-        title: v.title,
-        overview: v.overview,
-      });
-      return 0;
-    });
-    setContents(contentsTemp);
-  }, [data]);
+    console.log(index);
+    if (index + offset <= contents.length) {
+      setCurrentContents(contents.slice(index, index + offset));
+    } else {
+      setCurrentContents([...contents.slice(index), ...contents.slice(0, offset - contents.length % offset)]);
+    }
+  }, [index, offset]);
 
   useEffect(() => {
     prevAnimation.start(overPrev ? "onHover" : (overSlider ? "display" : "hide"));
@@ -171,21 +175,18 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
   }, [overSlider, overPrev, overNext, prevAnimation, nextAnimation]);
   
   const prevIndex = () => {
-    if (contents) {
-      if (isLeaving) return;
-      setIsLeaving(true);
-      setIsRtL(false);
-    }
+    if (isLeaving) return;
+    setIsRtL(false);
+    setIsLeaving(true);
+    setTimeout(() => setIndex((v) => (v - offset >= 0 ? v - offset : (v === 0 ? contents.length - offset : 0))), 0);
   };
   
   const nextIndex = () => {
-    if (contents) {
-      if (isLeaving) return;
-      setIsLeaving(true);
-      setIsRtL(true);
-      const maxIndex = Math.floor(contents.length / offset) - 1;
-      setIndex((v) => (v === maxIndex ? 0 : v + 1));
-    }
+    if (isLeaving) return;
+    setIsRtL(true);
+    setIsLeaving(true);
+    setIsInitial(false);
+    setTimeout(() => setIndex((v) => (v + offset * 2 < contents.length ? v + offset : (v + offset === contents.length ? 0 : contents.length - offset))), 0);
   };
 
   return (
@@ -195,33 +196,36 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
         onMouseEnter={() => setOverSlider(true)}
         onMouseLeave={() => setOverSlider(false)}
       >
-        <PrevBtn
-          onClick={prevIndex}
-          onMouseOver={() => setOverPrev(true)}
-          onMouseOut={() => setOverPrev(false)}
-        >
-          <Icon
-            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512"
-            variants={iconVariants}
-            initial="hide"
-            animate={prevAnimation}
-            transition={{ type: "tween" }}
-            style={{ originX: "right", originY: "center" }}
+        {isInitial ? (
+          <div></div>
+        ) : (
+          <PrevBtn
+            onClick={prevIndex}
+            onMouseOver={() => setOverPrev(true)}
+            onMouseOut={() => setOverPrev(false)}
           >
-            <motion.path d="M340,0l48,41L208,256,388,471l-48,41L125,256Z" transform="translate(-124.5)" />
-          </Icon>
-        </PrevBtn>
+            <Icon
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512"
+              variants={iconVariants}
+              initial="hide"
+              animate={prevAnimation}
+              transition={{ type: "tween" }}
+              style={{ originX: "right", originY: "center" }}
+            >
+              <motion.path d="M340,0l48,41L208,256,388,471l-48,41L125,256Z" transform="translate(-124.5)" />
+            </Icon>
+          </PrevBtn>
+        )}
         <AnimatePresence initial={false} onExitComplete={() => setIsLeaving(false)}>
           <Row
             key={index}
-            variants={rowVariants}
-            initial={isRtL ? "right" : "left"}
-            animate="center"
-            exit={isRtL ? "left" : "right"}
+            initial={isRtL ? {x: window.innerWidth} : {x: -window.innerWidth}}
+            animate={{x: 0}}
+            exit={isRtL ? {x: -window.innerWidth} : {x: window.innerWidth}}
             transition={{ type: "tween", duration: 0.5 }}
           >
             <div></div>
-            {contents?.slice(index * offset, (index + 1) * offset).map((v, i) => {
+            {currentContents.map((v, i) => {
               return (
                 <Box
                   key={v.id}

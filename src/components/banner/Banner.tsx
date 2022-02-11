@@ -9,7 +9,7 @@ const Wrapper = styled.div<{ bgimg: string }>`
   background-size: cover;
   background-position: 0% 33%;
   padding: 11vh 3.5vw;
-  margin-bottom: -20vh;
+  margin-bottom: -10vw;
   cursor: default;
 `;
 
