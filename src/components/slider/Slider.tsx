@@ -79,7 +79,13 @@ const Row = styled(motion.div)`
   position: absolute;
 `;
 
-const Box = styled(motion.div)<{ bgimg: string }>`
+const rowVariants = {
+  left:   { x: -window.innerWidth * 0.93 ,},
+  center: { x: 0, },
+  right:  { x: window.innerWidth * 0.93, },
+};
+
+const Box = styled(motion.div)<{ bgimg: string | undefined }>`
   background-color: ${(props) => props.theme.black.default};
   background-image: url(${(props) => props.bgimg});
   background-size: cover;
@@ -88,19 +94,9 @@ const Box = styled(motion.div)<{ bgimg: string }>`
   cursor: pointer;
 `;
 
-const BoxLeft = styled(Box)`
-  background-position: 100% 33%;
-  border-radius: 0 0.2vw 0.2vw 0;
-`;
-
-const BoxRight = styled(Box)`
-  background-position: 0% 33%;
-  border-radius: 0 0.2vw 0.2vw 0;
-`;
-
 const boxVariants = {
   onHover: {
-    scale: 1.3,
+    scale: 1.5,
     borderRadius: 0,
     transition: {
       delay: 0.4,
@@ -109,13 +105,25 @@ const boxVariants = {
   },
 };
 
-const Info = styled(motion.div)`
+const BoxLeft = styled(Box)`
+  background-position: 100% 33%;
+  border-radius: 0 0.2vw 0.2vw 0;
+  cursor: default;
+`;
+
+const BoxRight = styled(Box)`
+  background-position: 0% 33%;
+  border-radius: 0.2vw 0 0 0.2vw;
+  cursor: default;
+`;
+
+const Pannel = styled(motion.div)`
   background-color: ${(props) => props.theme.black.default};
   width: 100%;
-  height: 2vw;
+  height: 4vw;
   opacity: 0;
   position: absolute;
-  bottom: -2vw;
+  bottom: -4vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,7 +133,7 @@ const Info = styled(motion.div)`
   }
 `;
 
-const infoVariants = {
+const pannelVariants = {
   onHover: {
     opacity: 1,
     zIndex: 1,
@@ -146,6 +154,8 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
   const [isInitial, setIsInitial] = useState(true);
   const [index, setIndex] = useState(0);
   const [currentContents, setCurrentContents] = useState<ISlider[]>([]);
+  const [leftContent, setLeftContent] = useState<ISlider>();
+  const [rightContent, setRightContent] = useState<ISlider>();
 
   const contents = data.map((v) => {
     return ({
@@ -160,12 +170,13 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
   const nextAnimation = useAnimation();
 
   useEffect(() => {
-    console.log(index);
     if (index + offset <= contents.length) {
       setCurrentContents(contents.slice(index, index + offset));
     } else {
       setCurrentContents([...contents.slice(index), ...contents.slice(0, offset - contents.length % offset)]);
     }
+    setLeftContent(contents.at(index - 1));
+    setRightContent(contents.at((index + offset) % contents.length));
   }, [index, offset]);
 
   useEffect(() => {
@@ -184,8 +195,8 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
     if (isLeaving) return;
     setIsRtL(true);
     setIsLeaving(true);
-    setIsInitial(false);
     setTimeout(() => setIndex((v) => (v + offset * 2 < contents.length ? v + offset : (v + offset === contents.length ? 0 : contents.length - offset))), 0);
+    if (isInitial) setIsInitial(false);
   };
 
   return (
@@ -219,12 +230,16 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
         <AnimatePresence initial={false} onExitComplete={() => setIsLeaving(false)}>
           <Row
             key={index}
-            initial={isRtL ? { x: window.innerWidth } : { x: -window.innerWidth }}
-            animate={{ x: 0 }}
-            exit={isRtL ? { x: -window.innerWidth } : { x: window.innerWidth }}
+            variants={rowVariants}
+            initial={isRtL ? "right" : "left"}
+            animate="center"
+            exit={isRtL ? "left" : "right"}
             transition={{ type: "tween", duration: 0.5 }}
           >
-            <div></div>
+            <BoxLeft
+              key={leftContent?.id}
+              bgimg={leftContent?.imagePath}
+            />
             {currentContents.map((v, i) => {
               return (
                 <Box
@@ -235,16 +250,19 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
                   bgimg={v.imagePath}
                   style={{ originX: (i === 0 ? 0 : (i === offset - 1 ? 1 : 0.5)), originY: 1, }}
                 >
-                  <Info
-                    variants={infoVariants}
+                  <Pannel
+                    variants={pannelVariants}
                     transition={{ type: "tween", duration: 0 }}
                   >
                     <h4>{v.title}</h4>
-                  </Info>
+                  </Pannel>
                 </Box>
               );
             })}
-            <div></div>
+            <BoxRight
+              key={rightContent?.id}
+              bgimg={rightContent?.imagePath}
+            />
           </Row>
         </AnimatePresence>
         <NextBtn
