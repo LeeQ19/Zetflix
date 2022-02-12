@@ -7,7 +7,6 @@ import { IResult, ISlider } from "../interfaces";
 const Wrapper = styled.div`
   width: 100%;
   align-items: left;
-  position: relative;
 `;
 
 const Title = styled.h1`
@@ -76,7 +75,7 @@ const Row = styled(motion.div)`
   height: 8vw;
   display: grid;
   grid-template-columns: 3vw repeat(6, 1fr) 3vw;
-  gap: 0.3vw;
+  gap: 0.4vw;
   position: absolute;
 `;
 
@@ -205,6 +204,7 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
             onMouseOut={() => setOverPrev(false)}
           >
             <Icon
+              id="prev"
               xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512"
               variants={iconVariants}
               initial="hide"
@@ -219,9 +219,9 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
         <AnimatePresence initial={false} onExitComplete={() => setIsLeaving(false)}>
           <Row
             key={index}
-            initial={isRtL ? {x: window.innerWidth} : {x: -window.innerWidth}}
-            animate={{x: 0}}
-            exit={isRtL ? {x: -window.innerWidth} : {x: window.innerWidth}}
+            initial={isRtL ? { x: window.innerWidth } : { x: -window.innerWidth }}
+            animate={{ x: 0 }}
+            exit={isRtL ? { x: -window.innerWidth } : { x: window.innerWidth }}
             transition={{ type: "tween", duration: 0.5 }}
           >
             <div></div>
@@ -253,6 +253,7 @@ function Slider({ title, data, offset }: { title: string, data: IResult[], offse
           onMouseOut={() => setOverNext(false)}
         >
           <Icon
+            id="next"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512"
             variants={iconVariants}
             initial="hide"

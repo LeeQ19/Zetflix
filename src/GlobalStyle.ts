@@ -6,11 +6,11 @@ export const GlobalStyle = createGlobalStyle`
   a, abbr, acronym, address, big, cite, code,
   del, dfn, em, img, ins, kbd, q, s, samp,
   small, strike, strong, sub, sup, tt, var,
-  b, u, i, center,
+  b, u, i, center, button,
   dl, dt, dd, ol, ul, li,
   fieldset, form, label, legend,
   table, caption, tbody, tfoot, thead, tr, th, td,
-  article, aside, canvas, details, embed, 
+  article, aside, canvas, details, embed,
   figure, figcaption, footer, header, hgroup, 
   menu, nav, output, ruby, section, summary,
   time, mark, audio, video {
@@ -61,7 +61,7 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${(props) => props.theme.black.lightest};
   }
   *::-webkit-scrollbar-thumb:hover {
-    background-color: ${(props) => props.theme.scrollColor};
+    background-color: ${(props) => props.theme.gray.default};
   }
   body {
     font-family: 'Source Sans Pro', sans-serif;

@@ -29,8 +29,8 @@ export interface IResult {
 }
 
 export interface ISlider {
-  id: number;
+  id:        number;
   imagePath: string;
-  title: string;
-  overview: string;
+  title:     string;
+  overview:  string;
 }
