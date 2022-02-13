@@ -1,10 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="264" height="512" viewBox="0 0 264 512">
-  <defs>
-    <style>
-      .cls-1 {
-        fill-rule: evenodd;
-      }
-    </style>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512">
   <path d="M340,0l48,41L208,256,388,471l-48,41L125,256Z" transform="translate(-124.5)"/>
 </svg>

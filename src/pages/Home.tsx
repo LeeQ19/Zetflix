@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+
 import { getNowPlaying } from "../components/api";
 import { INowPlaying, IResult } from "../components/interfaces";
 import Loader from "../components/loader/Loader";
@@ -31,6 +33,7 @@ function Home() {
         <Wrapper>
           <Banner data={dataBanner} />
           <Slider title="Now Playing" data={dataSlider} offset={offset} />
+          <Outlet />
         </Wrapper>
       ) : (
         <Loader />

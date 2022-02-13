@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
 import { makeImagePath } from "../utils";
 import { IResult } from "../interfaces";
 
@@ -65,6 +67,8 @@ const Icon = styled.svg`
 `
 
 function Banner({ data }: { data: IResult }) {
+  const navigate = useNavigate();
+  const id = data.id;
   const imagePath = makeImagePath(data.backdrop_path ? data.backdrop_path : data.poster_path);
   const title = data.title;
   const overview = data.overview;
@@ -84,7 +88,7 @@ function Banner({ data }: { data: IResult }) {
           </Icon>
           Play
         </PlayBtn>
-        <InfoBtn>
+        <InfoBtn onClick={() => navigate(id.toString())}>
           <Icon
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 490.318 490.318"

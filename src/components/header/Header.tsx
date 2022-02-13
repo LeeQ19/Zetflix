@@ -1,7 +1,8 @@
-import { Link, useMatch } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useMatch, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
-import { useEffect, useState } from "react";
+
 import profile from "./images/img_Profile.png";
 
 const navList = [
@@ -37,7 +38,7 @@ const Wrapper = styled(motion.nav)`
   top: 0;
   font-size: 15px;
   font-weight: 300;
-  padding: 0px 60px;
+  padding: 0 2.5vw;
   z-index: 1;
 `;
 
@@ -55,24 +56,25 @@ const Col = styled.div`
   display: flex;
   align-items: center;
   > * {
-    margin-right: 20px;
+    margin-right: 1vw;
   }
 `;
 
 const Logo = styled(motion.svg)`
   width: 92.5px;
-  height: 25px;
   fill: ${(props) => props.theme.red.default};
+  margin-right: 0.7vw;
 `;
 
 const Nav = styled.ul`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1vw;
+  padding-bottom: 3px;
 `;
 
 const NavItem = styled.li`
-  margin: 0 0 5px 25px;
   transition: color 0.4s;
   color: ${(props) => props.theme.white.darker};
   &:hover {
@@ -81,7 +83,6 @@ const NavItem = styled.li`
 `;
 
 const NavCurrent = styled.li`
-  margin: 0 0 5px 25px;
   transition: color 0.4s;
   color: ${(props) => props.theme.white.darker};
   font-weight: 700;
