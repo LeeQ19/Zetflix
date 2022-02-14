@@ -14,3 +14,15 @@ export function getNowPlaying() {
       .then((res) => res.data)
   );
 }
+
+export function getMovieDetail(id: string) {
+  return (
+    axios
+      .get(`${BASE_PATH}/movie/${id}`, {
+        params: {
+          api_key: API_KEY,
+        }
+      })
+      .then((res) => res.data)
+  );
+}

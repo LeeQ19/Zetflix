@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+import { AnimatePresence } from "framer-motion";
 
 import { getNowPlaying } from "../components/api";
 import { INowPlaying, IResult } from "../components/interfaces";
@@ -28,7 +29,7 @@ function Home() {
   }, [nowPlaying]);
 
   return (
-    <>
+    <AnimatePresence>
       {dataBanner && dataSlider ? (
         <Wrapper>
           <Banner data={dataBanner} />
@@ -38,7 +39,7 @@ function Home() {
       ) : (
         <Loader />
       )}
-    </>
+    </AnimatePresence>
   );
 }
 

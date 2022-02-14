@@ -39,7 +39,6 @@ const Wrapper = styled(motion.nav)`
   font-size: 15px;
   font-weight: 300;
   padding: 0 2.5vw;
-  z-index: 1;
 `;
 
 const wrapperVariants = {
@@ -93,7 +92,7 @@ const Icon = styled(motion.svg)`
   width: 20px;
   height: 20px;
   fill: ${(props) => props.theme.white.default};
-  z-index: 2;
+  z-index: 1;
 `;
 
 const searchIconVariants = {
